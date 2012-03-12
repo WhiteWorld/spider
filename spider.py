@@ -6,6 +6,7 @@ def usage():
     -h,--help      display this help and exit
     -d,--deep      define the deep of the spider
     -u,--url       define the start url
+    -n,--number    define the number of files downloaded
     -v,--version   output version information and exit
     """
 def version():
@@ -30,7 +31,7 @@ def getURL(url):
         s=fp.read()
         if not s:
             break
-         urls=pattern.findall(s)
+        urls=pattern.findall(s)
     fp.close()
     return urls
         
@@ -51,14 +52,14 @@ def downURL(url,filename):
     op.close()
     return 1
 
-def BFS(starturl,deep):
-    urls=[]
+def BFS(starturl,deep,number):
+    urls=[] 
     urlflag=[]
     urls.append(starturl)
     urlflag.append(starturl)
     i=0;
     while 1:
-        if i>deep:
+        if i > number:
             break;
         if len(urls)>0:
             url=urls.pop(0)
@@ -69,7 +70,7 @@ def BFS(starturl,deep):
             print 'goto loop....'
             for url in urllist:
               #   print url
-                if urlflag.count(url) == 0:
+                 if urlflag.count(url) == 0:
                     urls.append(url)
                     urlflag.append(url)
         else:
@@ -78,12 +79,13 @@ def BFS(starturl,deep):
 
 def main():
     try:
-        opts,argv=getopt.getopt(sys.argv[1:],"hu:d:v",["help","url=","deep=","version"])
+        opts,argv=getopt.getopt(sys.argv[1:],"hu:d:n:v",["help","url=","deep=","number=","version"])
     except getopt.GetoptError,err:
         print str(err)
         usage()
         sys.exit(2) 
     deep=1
+    number=10
     url="http://sports.sina.com.cn"
     for o,a in opts:
         if o in ("-v"," --version"):
@@ -96,11 +98,13 @@ def main():
             url=a
         elif o in ("-d","--deep"):
             deep=int(a)
+        elif o in ("-n","--number"):
+            number=int(a)
         else:
-            assert False,"unhandled option"
-    print "url=%s,deep=%d" %(url,deep)
+            assert False ,"unhandled option"
+    print "url=%s,deep=%d,number=%d" %(url,deep,number)
     make_file()
     #downURL(url,'1.html')
-    BFS(url,deep) 
+    BFS(url,deep,number) 
 if __name__ == "__main__":
     main()
