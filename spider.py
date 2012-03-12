@@ -11,10 +11,7 @@ def usage():
     """
 def version():
     print "spider version 1.0\nWritten by liubai"
-def realwork(url,deep):
-    urllib2.urlopen("http://"+url).read()
-    print "deep=",deep
-def make_file():
+def make_dir():
     if (os.path.exists('getall')) == False:
         os.mkdir('getall')
 def getURL(url):
@@ -57,7 +54,7 @@ def BFS(starturl,deep,number):
     urlflag=[]
     urls.append(starturl)
     urlflag.append(starturl)
-    i=0;
+    i=0
     while 1:
         if i > number:
             break;
@@ -103,7 +100,7 @@ def main():
         else:
             assert False ,"unhandled option"
     print "url=%s,deep=%d,number=%d" %(url,deep,number)
-    make_file()
+    make_dir()
     #downURL(url,'1.html')
     BFS(url,deep,number) 
 if __name__ == "__main__":
