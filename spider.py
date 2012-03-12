@@ -1,4 +1,4 @@
-import urllib2
+import urllib2,urlparse
 import getopt,sys,string,os,re
 def usage():
     print """
@@ -17,17 +17,20 @@ def make_file():
     if (os.path.exists('getall')) == False:
         os.mkdir('getall')
 def getURL(url):
+    urls=[]
     try: 
         fp=urllib2.urlopen(url)
     except:
         print 'get url exception'
         return []
-    pattern = re.compile("http://sports.com.cn/[^\>]+.shtml")
+   # pattern = re.compile("http://*.shtml")
+    pattern = re.compile(r'(http://[^///]+)', re.I)  
+   
     while 1:
         s=fp.read()
         if not s:
             break
-        urls=pattern.findall(s)
+         urls=pattern.findall(s)
     fp.close()
     return urls
         
@@ -63,9 +66,9 @@ def BFS(starturl,deep):
             downURL(url,str(i)+'.htm')
             i=i+1
             urllist=getURL(url)
-            
+            print 'goto loop....'
             for url in urllist:
-                print url
+              #   print url
                 if urlflag.count(url) == 0:
                     urls.append(url)
                     urlflag.append(url)
