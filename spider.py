@@ -15,7 +15,7 @@ def make_dir():
     if (os.path.exists('getall')) == False:
         os.mkdir('getall')
 def getURL(url):
-    urls=[]
+    urls=[] 
     try: 
         fp=urllib2.urlopen(url)
     except:
@@ -54,24 +54,41 @@ def BFS(starturl,deep,number):
     urlflag=[]
     urls.append(starturl)
     urlflag.append(starturl)
-    i=0
+    dn=[0 for x in range(0,10000000)]   
+    i=0#count number
+    j=0#delta number
+    d=0#count deep
+    dn[0]=1
+    w=0
     while 1:
+        if d > deep:
+            break
         if i > number:
-            break;
+            break
         if len(urls)>0:
             url=urls.pop(0)
             print url,len(urls)
-            downURL(url,str(i)+'.htm')
+            #downURL(url,str(i)+'.htm')
             i=i+1
+            j=j+1
+
             urllist=getURL(url)
             print 'goto loop....'
+            
             for url in urllist:
               #   print url
-                 if urlflag.count(url) == 0:
+                if urlflag.count(url) == 0:
+                    w=w+1
                     urls.append(url)
                     urlflag.append(url)
+            if j == dn[d]:
+                d=d+1
+                j=0
+                dn[d]=w
+                w= 0
+                print "deep=%d,n=%d" %(d,dn[d])
         else:
-            break
+            break 
                     
 
 def main():
