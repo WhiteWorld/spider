@@ -68,7 +68,7 @@ def BFS(starturl,deep,number):
         if len(urls)>0:
             url=urls.pop(0)
             print url,len(urls)
-            #downURL(url,str(i)+'.htm')
+            downURL(url,str(i)+'.htm')
             i=i+1
             j=j+1
 
